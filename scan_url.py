@@ -1,21 +1,11 @@
-# scan_url.py
-import os
+import streamlit as st
 import requests
 import pandas as pd
 
-# read API key from environment or .env (simple way)
-VT_API_KEY = os.getenv('VT_API_KEY')
+# Read API key from Streamlit Secrets
+VT_API_KEY = st.secrets.get("VT_API_KEY")
 if not VT_API_KEY:
-    try:
-        with open('.env') as f:
-            for line in f:
-                if line.startswith('VT_API_KEY'):
-                    VT_API_KEY = line.strip().split('=', 1)[1]
-    except FileNotFoundError:
-        pass
-
-if not VT_API_KEY:
-    raise SystemExit("VT_API_KEY not found. Add it to your environment or .env file.")
+    raise SystemExit("❌ VT_API_KEY not found in Streamlit Secrets!")
 
 HEADERS = {"x-apikey": VT_API_KEY}
 BASE = "https://www.virustotal.com/api/v3"
